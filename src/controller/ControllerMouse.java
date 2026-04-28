@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import model.Model;
 import view.View;
 
@@ -27,14 +28,8 @@ public class ControllerMouse extends MouseAdapter {
 			JLabel label = (JLabel) e.getSource();
 			Point p = (Point) label.getClientProperty("gridPoint");
 			String labelText = label.getText();
-			if(!labelText.isEmpty()) {
-				model.startConnection(p);
-				
-			}else {
-model.canAddPointsToCurrentConnection = false;
-				model.addPointToCurrentConnection(p);
-			}
 			
+			model.startConnection(p, labelText);
 			view.updateView();
 		}
 
@@ -44,7 +39,7 @@ model.canAddPointsToCurrentConnection = false;
 				System.out.println("mouseEntered while mouse pressed " + e.getComponent().getName());
 				JLabel label = (JLabel) e.getSource();
 				Point p = (Point) label.getClientProperty("gridPoint");
-				model.addPointToCurrentConnection(p);
+				model.mouseEntered(p);
 				view.updateView();
 			}
 		}
@@ -54,5 +49,9 @@ model.canAddPointsToCurrentConnection = false;
 			// use component of last entered mouse position
 			System.out.println("mouseReleased " + previousEnteredComponent.getName());
 			model.mouseReleased();
-			view.updateView();}
+			view.updateView();
+			if(model.detectWinning()) {
+    JOptionPane.showMessageDialog(view, "You Win!");
+}
+		}
 	}

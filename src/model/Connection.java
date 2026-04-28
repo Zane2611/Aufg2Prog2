@@ -30,7 +30,7 @@ private boolean isPointHorizontalOrVertical(Point p) {
 }
 
 public boolean add(Point p) {
-	if(isPointHorizontalOrVertical(p)) {
+	if(isPointHorizontalOrVertical(p) && !this.conn.contains(p)) {
 		this.conn.add(p);
 		return true;
 	}
