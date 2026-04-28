@@ -13,8 +13,6 @@ public class View extends JFrame {
 	public int max = 4; // dimension of game max x max
 	public JPanel panelGameBoard;
 	public JLabel[][] allLabels = new JLabel[max][max];
-	private JButton loadButton;
-	private JButton saveButton;
 	private Model model;
 
 public View(Model model, Controller controller) {	
@@ -34,7 +32,7 @@ public View(Model model, Controller controller) {
 	
 	public void createViewForGameBoard() {
 		if (this.panelGameBoard != null)
-			this.remove(panelGameBoard); // old game
+			this.remove(panelGameBoard);
 		this.panelGameBoard = new JPanel();
 		this.add(panelGameBoard, BorderLayout.CENTER);
 		this.allLabels = new JLabel[max][max];
