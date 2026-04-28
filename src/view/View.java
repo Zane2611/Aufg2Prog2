@@ -1,9 +1,9 @@
 package view;
 
+import controller.ControllerMouse;
 import java.awt.*;
 import javax.swing.*;
-
-import controller.ControllerMouse;
+import model.Connection;
 import model.Model;
 
 public class View extends JFrame {
@@ -17,6 +17,7 @@ public class View extends JFrame {
 
 	public View(Model model) {
 		super("Game");
+		this.model = model;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		final int HOR_SIZE = 400;
 		final int VER_SIZE = 420;
@@ -25,6 +26,7 @@ public class View extends JFrame {
 		pane.setLayout(new BorderLayout());
 		createViewForGameBoard();
 		setVisible(true);
+		this.model = model;
 	}
 	
 	public void createViewForGameBoard() {
@@ -34,10 +36,13 @@ public class View extends JFrame {
 		this.add(panelGameBoard, BorderLayout.CENTER);
 		this.allLabels = new JLabel[max][max];
 		this.panelGameBoard.setLayout(new GridLayout(max, max, 1, 1));
-		ControllerMouse controllerMouse = new ControllerMouse(model);
+		ControllerMouse controllerMouse = new ControllerMouse(model, this);
 		for (int row = 0; row < max; row++) {
 			for (int column = 0; column < max; column++) {
-				JLabel label = new JLabel(column + ";" + row, SwingConstants.CENTER);
+				int boardValue = this.model.gameBoard.getValue(column, row);
+				String labelText = (boardValue != 0) ? String.valueOf(boardValue) : "";
+				JLabel label = new JLabel(labelText, SwingConstants.CENTER);
+				label.putClientProperty("gridPoint", new Point(column, row));
 				label.setOpaque(true);
 				label.setBackground(Color.LIGHT_GRAY);
 				label.setFont(new Font("Arial", Font.BOLD, 30));
@@ -49,14 +54,19 @@ public class View extends JFrame {
 		}
 	}
 
-	private int getColumnFromLabel(String labelName) {
-		String[] partsOfLabelName = labelName.split(";");
-		return Integer.parseInt(partsOfLabelName[0]);
+	public void updateView() {
+		for (int row = 0; row < max; row++) {
+			for (int column = 0; column < max; column++) {
+				this.allLabels[column][row].setBackground(Color.LIGHT_GRAY);
+			}
+		}
+		for (Connection c : this.model.allConnections) {
+			for (Point p : c.conn) {
+				this.allLabels[p.x][p.y].setBackground(c.color.getColor());
+			}
+		}
 	}
 
-	private int getRowFromLabel(String labelName) {
-		String[] partsOfLabelName = labelName.split(";");
-		return Integer.parseInt(partsOfLabelName[1]);
-	}
+	
 	
 }
