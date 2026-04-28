@@ -1,5 +1,6 @@
 package view;
 
+import controller.Controller;
 import controller.ControllerMouse;
 import java.awt.*;
 import javax.swing.*;
@@ -12,10 +13,11 @@ public class View extends JFrame {
 	public int max = 4; // dimension of game max x max
 	public JPanel panelGameBoard;
 	public JLabel[][] allLabels = new JLabel[max][max];
-	
+	private JButton loadButton;
+private JButton saveButton;
 	private Model model;
 
-	public View(Model model) {
+public View(Model model, Controller controller) {	
 		super("Game");
 		this.model = model;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -25,6 +27,7 @@ public class View extends JFrame {
 		Container pane = getContentPane();
 		pane.setLayout(new BorderLayout());
 		createViewForGameBoard();
+		createButtonPanel(controller);
 		setVisible(true);
 		this.model = model;
 	}
@@ -53,6 +56,22 @@ public class View extends JFrame {
 			}
 		}
 	}
+
+	public void createButtonPanel(Controller controller) {
+
+    JPanel buttonPanel = new JPanel();
+
+    this.loadButton = new JButton("Load");
+    this.saveButton = new JButton("Save");
+
+    loadButton.addActionListener(e -> controller.importGame());
+    saveButton.addActionListener(e -> controller.exportGame());
+
+    buttonPanel.add(loadButton);
+    buttonPanel.add(saveButton);
+
+    this.add(buttonPanel, BorderLayout.SOUTH);
+}
 
 	public void updateView() {
 		for (int row = 0; row < max; row++) {

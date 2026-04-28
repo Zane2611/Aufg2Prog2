@@ -1,28 +1,41 @@
 package model;
 
-import java.awt.Point;
-
 public class GameBoard {
-	private int[][] board;
 
-	public GameBoard() {
-		this.board = new int[4][4];
-		// Initialize with default hardcoded values from picture
-		this.board[1][0] = 1;
-		this.board[3][0] = 1;
-		this.board[1][1] = 3;
-		this.board[2][1] = 2;
-		this.board[0][2] = 4;
-		this.board[1][2] = 3;
-		this.board[2][2] = 4;
-		this.board[3][3] = 2;
-	}
+    private int max = 4;
+    private int[][] fld;
 
-	public int getValue(int column, int row) {
-		return this.board[column][row];
-	}
+    public GameBoard() {
+        this.fld = new int[max][max];
 
-	public int[][] getBoard() {
-		return this.board;
-	}
+        // Beispielwerte
+        fld[1][0] = 1;
+        fld[3][0] = 1;
+        fld[1][1] = 3;
+        fld[2][1] = 2;
+        fld[0][2] = 4;
+        fld[1][2] = 3;
+        fld[2][2] = 4;
+        fld[3][3] = 2;
+    }
+
+    public int getValue(int column, int row) {
+        return fld[column][row];
+    }
+
+    public int[][] getFld() {
+        return fld;
+    }
+
+    public void setFld(int[][] fld) {
+        this.fld = fld;
+    }
+
+    public int getMax() {
+        return max;
+    }
+
+    public void setMax(int max) {
+        this.max = max;
+    }
 }

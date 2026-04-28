@@ -27,6 +27,11 @@ public class Model {
 		startPoint = null;
 	}
 
+	public void setGameBoard(GameBoard newBoard) {
+        this.gameBoard = newBoard;
+        this.allConnections.clear(); // wichtig laut Aufgabe
+    }
+
 public boolean detectWinning() {
 
     Set<Integer> solvedNumbers = getSolvedNumbersFromConnections();
@@ -85,7 +90,7 @@ private Set<Integer> getBoardNumbers() {
 
     Set<Integer> boardNumbers = new HashSet<>();
 
-    int size = gameBoard.getBoard().length;
+    int size = gameBoard.getFld().length;
 
     for (int y = 0; y < size; y++) {
         for (int x = 0; x < size; x++) {
