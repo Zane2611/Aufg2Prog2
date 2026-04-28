@@ -40,7 +40,6 @@ public class Controller {
             try {
                 ObjectMapper mapper = new ObjectMapper();
 
-                // nur GameBoard wird gespeichert (laut Aufgabe korrekt)
                 mapper.writeValue(file, model.gameBoard);
 
             } catch (Exception e) {
@@ -67,7 +66,7 @@ public class Controller {
                 GameBoard newBoard = mapper.readValue(file, GameBoard.class);
 
                 model.setGameBoard(newBoard);
-
+                view.setMax(newBoard.getMax()); 
                 view.createViewForGameBoard();
                 view.updateView();
 

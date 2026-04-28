@@ -14,7 +14,7 @@ public class View extends JFrame {
 	public JPanel panelGameBoard;
 	public JLabel[][] allLabels = new JLabel[max][max];
 	private JButton loadButton;
-private JButton saveButton;
+	private JButton saveButton;
 	private Model model;
 
 public View(Model model, Controller controller) {	
@@ -27,7 +27,7 @@ public View(Model model, Controller controller) {
 		Container pane = getContentPane();
 		pane.setLayout(new BorderLayout());
 		createViewForGameBoard();
-		createButtonPanel(controller);
+		createMenuBar(controller);		
 		setVisible(true);
 		this.model = model;
 	}
@@ -57,20 +57,24 @@ public View(Model model, Controller controller) {
 		}
 	}
 
-	public void createButtonPanel(Controller controller) {
+	public void createMenuBar(controller.Controller controller) {
 
-    JPanel buttonPanel = new JPanel();
+    JMenuBar menuBar = new JMenuBar();
 
-    this.loadButton = new JButton("Load");
-    this.saveButton = new JButton("Save");
+    JMenu fileMenu = new JMenu("File");
 
-    loadButton.addActionListener(e -> controller.importGame());
-    saveButton.addActionListener(e -> controller.exportGame());
+    JMenuItem exportItem = new JMenuItem("JSON-Export");
+    JMenuItem importItem = new JMenuItem("JSON-Import");
 
-    buttonPanel.add(loadButton);
-    buttonPanel.add(saveButton);
+    exportItem.addActionListener(e -> controller.exportGame());
+    importItem.addActionListener(e -> controller.importGame());
 
-    this.add(buttonPanel, BorderLayout.SOUTH);
+    fileMenu.add(exportItem);
+    fileMenu.add(importItem);
+
+    menuBar.add(fileMenu);
+
+    this.setJMenuBar(menuBar);
 }
 
 	public void updateView() {
@@ -84,6 +88,10 @@ public View(Model model, Controller controller) {
 				this.allLabels[p.x][p.y].setBackground(c.color.getColor());
 			}
 		}
+	}
+	
+	public void setMax(int max) {
+	    this.max = max;
 	}
 
 	
