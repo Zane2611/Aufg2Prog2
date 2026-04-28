@@ -112,8 +112,10 @@ private Set<Integer> getBoardNumbers() {
 
     canAddPointsToCurrentConnection = true;
     hasMovedOffStartPoint = false;
- 	startPoint = p;
+
+   
     if (isPointAlreadyUsed(p) || labelText.isEmpty()) {
+    	startPoint = p;
         canAddPointsToCurrentConnection = false;
         return;
     }
