@@ -69,6 +69,7 @@ public class Controller {
                 view.setMax(newBoard.getMax()); 
                 view.createViewForGameBoard();
                 view.updateView();
+                
 
             } catch (Exception e) {
                 e.printStackTrace();
