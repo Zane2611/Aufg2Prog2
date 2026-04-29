@@ -13,6 +13,7 @@ public class Model {
 	boolean hasMovedOffStartPoint;
 	Point startPoint;
 	public GameBoard gameBoard;
+	private DrawState state;
 
 	public boolean canAddPointsToCurrentConnection;
 
@@ -23,11 +24,12 @@ public class Model {
 		this.canAddPointsToCurrentConnection = true;
 		this.gameBoard = new GameBoard();
 		startPoint = null;
+		this.state = DrawState.IDLE;
 	}
 
 	public void setGameBoard(GameBoard newBoard) {
 		this.gameBoard = newBoard;
-		this.allConnections.clear(); // wichtig laut Aufgabe
+		this.allConnections.clear(); 
 		this.currentConnectionIndex = -1; 
 	}
 
