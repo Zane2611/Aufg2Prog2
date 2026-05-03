@@ -74,13 +74,17 @@ public View(Model model, Controller controller) {
 
     this.setJMenuBar(menuBar);
 }
-
-	public void updateView() {
+	
+	public void resetView() {
 		for (int row = 0; row < max; row++) {
 			for (int column = 0; column < max; column++) {
 				this.allLabels[column][row].setBackground(Color.LIGHT_GRAY);
 			}
 		}
+	}
+
+	public void updateView() {
+		resetView();
 		for (Connection c : this.model.allConnections) {
 			for (Point p : c.conn) {
 				this.allLabels[p.x][p.y].setBackground(c.color.getColor());

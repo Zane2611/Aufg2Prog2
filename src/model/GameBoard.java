@@ -9,7 +9,7 @@ public class GameBoard {
         this.fld = new int[max][max];
 
         // Beispielwerte
-        fld[1][0] = 1;
+        fld[0][0] = 1;
         fld[3][0] = 1;
         fld[1][1] = 3;
         fld[2][1] = 2;

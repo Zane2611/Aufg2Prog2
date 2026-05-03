@@ -29,7 +29,7 @@ public class ControllerMouse extends MouseAdapter {
 			Point p = (Point) label.getClientProperty("gridPoint");
 			String labelText = label.getText();
 			
-			model.startConnection(p, labelText);
+			model.mousePressed(p, labelText);
 			view.updateView();
 		}
 
@@ -38,8 +38,9 @@ public class ControllerMouse extends MouseAdapter {
 			if (this.isMousePressed == true) {
 				System.out.println("mouseEntered while mouse pressed " + e.getComponent().getName());
 				JLabel label = (JLabel) e.getSource();
+				String labelText = label.getText();
 				Point p = (Point) label.getClientProperty("gridPoint");
-				model.mouseEntered(p);
+				model.mouseEntered(p, labelText);
 				view.updateView();
 			}
 		}
@@ -51,7 +52,7 @@ public class ControllerMouse extends MouseAdapter {
 			model.mouseReleased();
 			view.updateView();
 			if(model.detectWinning()) {
-    JOptionPane.showMessageDialog(view, "You Win!");
+			JOptionPane.showMessageDialog(view, "You Win!");
 }
 		}
 	}

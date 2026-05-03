@@ -1,5 +1,5 @@
 package model;
 
 public enum DrawState {
-	IDLE, DRAWING
+	IDLE, DRAWING, SELECTED, INVALID
 }
