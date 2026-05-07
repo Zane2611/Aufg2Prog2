@@ -79,10 +79,6 @@ public class View extends JFrame {
 
 	}
 
-	private void showConnections() {
-		// TODO Auto-generated method stub
-
-	}
 
 	public void resetView() {
 		for (int row = 0; row < max; row++) {
@@ -94,6 +90,10 @@ public class View extends JFrame {
 
 	public void updateView() {
 		resetView();
+		repaintView();
+	}
+	
+	private void repaintView() {
 		for (Connection c : this.model.allConnections) {
 			for (Point p : c.conn) {
 				this.allLabels[p.x][p.y].setBackground(c.color.getColor());
