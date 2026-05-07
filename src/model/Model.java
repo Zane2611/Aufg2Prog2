@@ -47,8 +47,7 @@ public class Model {
 	}
 
 	private void startNewConnection(Point point) {
-		this.allConnections.add(new Connection());
-		currentConnectionIndex++;
+		addConnection();
 		addPointToCurrentConnection(point);
 	}
 
