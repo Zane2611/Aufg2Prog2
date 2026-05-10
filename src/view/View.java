@@ -7,61 +7,102 @@ import javax.swing.*;
 import model.Connection;
 import model.Model;
 
+/**
+ * Main view class responsible for rendering the game board, handling UI layout
+ * and updating the visual representation of all connections stored in the
+ * model.
+ *
+ * @author Philipp Palm
+ */
 public class View extends JFrame {
 
 	private static final long serialVersionUID = 1;
-	public int max = 4; // dimension of game max x max
-	public JPanel panelGameBoard;
-	public JLabel[][] allLabels = new JLabel[max][max];
-	private Model model;
 
+	private static final Font LABEL_FONT = new Font("Arial", Font.BOLD, 30);
+
+	private JPanel panelGameBoard;
+
+	private JLabel[][] allLabels;
+
+	private final Model model;
+
+	private static final int WINDOW_WIDTH = 400;
+
+	private static final int WINDOW_HEIGHT = 420;
+
+	/**
+	 * Creates the main game window, initializes layout, builds the game board and
+	 * menu bar.
+	 *
+	 * @param model      the game model
+	 * @param controller the main controller
+	 */
 	public View(Model model, Controller controller) {
 		super("Game");
 		this.model = model;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		final int HOR_SIZE = 400;
-		final int VER_SIZE = 420;
-		setSize(HOR_SIZE, VER_SIZE);
-		Container pane = getContentPane();
-		pane.setLayout(new BorderLayout());
+		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+		getContentPane().setLayout(new BorderLayout());
+
 		createViewForGameBoard();
 		createMenuBar(controller);
+
 		setVisible(true);
-		this.model = model;
 	}
 
+	/**
+	 * Creates or rebuilds the game board panel based on the current max value. Each
+	 * cell is represented by a JLabel with mouse interaction enabled.
+	 */
 	public void createViewForGameBoard() {
-		if (this.panelGameBoard != null)
-			this.remove(panelGameBoard);
-		this.panelGameBoard = new JPanel();
-		this.add(panelGameBoard, BorderLayout.CENTER);
-		this.allLabels = new JLabel[max][max];
-		this.panelGameBoard.setLayout(new GridLayout(max, max, 1, 1));
+
+		int max = model.getGameBoard().getMax();
+
+		if (panelGameBoard != null) {
+			remove(panelGameBoard);
+		}
+
+		panelGameBoard = new JPanel();
+		add(panelGameBoard, BorderLayout.CENTER);
+
+		allLabels = new JLabel[max][max];
+		panelGameBoard.setLayout(new GridLayout(max, max, 1, 1));
+
 		ControllerMouse controllerMouse = new ControllerMouse(model, this);
+
 		for (int row = 0; row < max; row++) {
 			for (int column = 0; column < max; column++) {
-				int boardValue = this.model.gameBoard.getValue(column, row);
+
+				int boardValue = model.getGameBoard().getValue(column, row);
 				String labelText = (boardValue != 0) ? String.valueOf(boardValue) : "";
+
 				JLabel label = new JLabel(labelText, SwingConstants.CENTER);
 				label.putClientProperty("gridPoint", new Point(column, row));
 				label.setOpaque(true);
 				label.setBackground(Color.LIGHT_GRAY);
-				label.setFont(new Font("Arial", Font.BOLD, 30));
+				label.setFont(LABEL_FONT);
+				label.setName(column + ";" + row);
+				label.addMouseListener(controllerMouse);
+
 				allLabels[column][row] = label;
-				allLabels[column][row].addMouseListener(controllerMouse);
-				allLabels[column][row].setName(column + ";" + row);
-				this.panelGameBoard.add(allLabels[column][row]);
+				panelGameBoard.add(allLabels[column][row]);
 			}
 		}
+
 		revalidate();
 		repaint();
 		updateView();
 	}
 
-	public void createMenuBar(controller.Controller controller) {
+	/**
+	 * Creates the menu bar containing JSON import and export options.
+	 *
+	 * @param controller the main controller handling menu actions
+	 */
+	public void createMenuBar(Controller controller) {
 
 		JMenuBar menuBar = new JMenuBar();
-
 		JMenu fileMenu = new JMenu("File");
 
 		JMenuItem exportItem = new JMenuItem("JSON-Export");
@@ -72,37 +113,40 @@ public class View extends JFrame {
 
 		fileMenu.add(exportItem);
 		fileMenu.add(importItem);
-
 		menuBar.add(fileMenu);
 
-		this.setJMenuBar(menuBar);
-
+		setJMenuBar(menuBar);
 	}
 
-
-	public void resetView() {
-		for (int row = 0; row < max; row++) {
-			for (int column = 0; column < max; column++) {
-				this.allLabels[column][row].setBackground(Color.LIGHT_GRAY);
-			}
-		}
-	}
-
+	/**
+	 * Updates the entire view by resetting all cell backgrounds and repainting all
+	 * active connections.
+	 */
 	public void updateView() {
 		resetView();
 		repaintView();
 	}
-	
-	private void repaintView() {
-		for (Connection c : this.model.allConnections) {
-			for (Point p : c.conn) {
-				this.allLabels[p.x][p.y].setBackground(c.color.getColor());
+
+	/**
+	 * Resets all grid cell backgrounds to the default color.
+	 */
+	private void resetView() {
+		for (int row = 0; row < model.getGameBoard().getMax(); row++) {
+			for (int column = 0; column < model.getGameBoard().getMax(); column++) {
+				allLabels[column][row].setBackground(Color.LIGHT_GRAY);
 			}
 		}
 	}
 
-	public void setMax(int max) {
-		this.max = max;
+	/**
+	 * Colors all cells belonging to active connections using their assigned color.
+	 */
+	private void repaintView() {
+		for (Connection c : model.getAllConnections()) {
+			for (Point p : c.getConn()) {
+				allLabels[p.x][p.y].setBackground(c.getColor());
+			}
+		}
 	}
 
 }
